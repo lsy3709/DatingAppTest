@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         val cardStackView = findViewById<CardStackView>(R.id.cardStackView)
 
         manager = CardStackLayoutManager(baseContext, object  : CardStackListener {
+
             override fun onCardDragging(direction: Direction?, ratio: Float) {
 
             }
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         testList.add("a")
         testList.add("b")
         testList.add("c")
+        testList.add("d")
 
         cardStackAdapter = CardStackAdapter(baseContext, testList)
 

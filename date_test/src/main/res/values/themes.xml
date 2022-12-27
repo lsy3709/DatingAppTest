@@ -2,6 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.DatingAppTest" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
+        <!--앱 타이틀 제목 제거-->
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>

@@ -12,6 +12,7 @@ import com.yuyakaido.android.cardstackview.Direction
 class MainActivity : AppCompatActivity() {
 
     lateinit var cardStackAdapter: CardStackAdapter
+    //뷰를 어떻게 보일거냐? 카드 스택뷰에 정의된 부분에서 가져올 예정.
     lateinit var manager : CardStackLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +54,9 @@ class MainActivity : AppCompatActivity() {
         testList.add("c")
 
         cardStackAdapter = CardStackAdapter(baseContext, testList)
-        cardStackView.layoutManager = manager
+
+        // 카드 스택 레이아웃에 매니저 연결
+       cardStackView.layoutManager = manager
         cardStackView.adapter = cardStackAdapter
     }
 }

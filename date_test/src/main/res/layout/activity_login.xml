@@ -9,7 +9,7 @@
     tools:context=".auth.LoginActivity"
     android:orientation="vertical">
 
-
+    <!--안드로이드 이메일 입력시-->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,6 +25,8 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+
+    <!--안드로이드 패스워드 입력시 : 입력 길이 10, 갯수 세기 활성화-->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

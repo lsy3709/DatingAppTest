@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DatingAppTest">
+        <activity android:name=".setting.SettingActivity"></activity>
+        <activity android:name=".setting.MyPageActivity" />
         <activity
             android:name=".auth.LoginActivity"
              />

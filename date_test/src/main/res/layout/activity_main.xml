@@ -6,8 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<!--메인 상단에 프로필 아이콘으로 로그아웃 기능 구현.-->
+    <!--ConstraintLayout 각 상단 오른쪽에 부모 설정-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/settingIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="3dp"
+            android:src="@drawable/profile_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--메인 카드 스택 뷰로 슬라이드로 이미지 넘기는 -->
+     <!--상단에 프로필 이미지 안보여서 상단에 마진 60 추가-->
     <com.yuyakaido.android.cardstackview.CardStackView
         android:id="@+id/cardStackView"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -12,6 +12,8 @@ class IntroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
+        //로그인 버튼 클릭시 -> 로그인 화면으로
+        // 나중에 뷰 바인딩 기법으로 변경 해도 됨. 일단은 기본으로 함.
         val loginBtn : Button = findViewById(R.id.loginBtn)
         loginBtn.setOnClickListener {
 
@@ -19,6 +21,7 @@ class IntroActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //회원가입 버튼 클릭시 -> 회원가입 화면으로
         val joinBtn : Button = findViewById(R.id.joinBtn)
         joinBtn.setOnClickListener {
 

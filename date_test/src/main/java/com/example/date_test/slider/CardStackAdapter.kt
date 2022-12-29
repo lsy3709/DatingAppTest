@@ -44,6 +44,8 @@ class CardStackAdapter(val context : Context, val items : List<UserDataModel>) :
 
         fun binding(data: UserDataModel) {
 
+            // 파이어베이스 스토리지에서 해당 이미지를 받아와서
+            // 글라이드에 넣는 형식.
             val storageRef = Firebase.storage.reference.child(data.uid + ".png")
             storageRef.downloadUrl.addOnCompleteListener(OnCompleteListener { task ->
 
@@ -55,6 +57,7 @@ class CardStackAdapter(val context : Context, val items : List<UserDataModel>) :
                 }
 
             })
+
             nickname.text = data.nickname
             age.text = data.age
             city.text = data.city

@@ -29,9 +29,11 @@ class SettingActivity : AppCompatActivity() {
         val logoutBtn = findViewById<Button>(R.id.logoutBtn)
         logoutBtn.setOnClickListener {
 
+            //파이어베이스 인증 로그아웃
             val auth = Firebase.auth
             auth.signOut()
 
+            // 인트로 액티비티로 이동하는 부분.
             val intent = Intent(this, IntroActivity::class.java)
             startActivity(intent)
 

@@ -49,16 +49,22 @@ class MyPageActivity : AppCompatActivity() {
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
+                //dataSnapshot 파이어베이스에서 담은 정보. 로그 출력.
                 Log.d(TAG, dataSnapshot.toString())
+                // dataSnapshot 에서 가지고 온 정보들 해당 데이터 클래스(DTO)형식으로 해서 data 에 재할당.
                 val data = dataSnapshot.getValue(UserDataModel::class.java)
 
+                // data 객체에 담긴 정보를 직접 접근에 다시 재할당.
                 myUid.text = data!!.uid
                 myNickname.text = data!!.nickname
                 myAge.text = data!!.age
                 myCity.text = data!!.city
                 myGender.text = data!!.gender
 
+                // 파이어베이스 스토리지에 저장된 이미지 파일명: uid.png 해당 이미지를 가지고 옴.
                 val storageRef = Firebase.storage.reference.child(data.uid + ".png")
+                // storageRef 객체에 담긴 이미지를 다운로드 받아서
+                // 람다식으로 해서 글라이드 이미지를 처리하는 곳으로 담음.
                 storageRef.downloadUrl.addOnCompleteListener(OnCompleteListener { task ->
 
                     if(task.isSuccessful) {
@@ -78,6 +84,8 @@ class MyPageActivity : AppCompatActivity() {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
+        //파이어 베이스 이벤트 리스너에 해당 postListener 등록.
+        // 마이 페이지에 불러올 파이어베이스 정보들.
         FirebaseRef.userInfoRef.child(uid).addValueEventListener(postListener)
 
     }

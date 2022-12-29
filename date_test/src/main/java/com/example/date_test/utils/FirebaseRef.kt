@@ -15,5 +15,8 @@ class FirebaseRef {
         // 각각의 사용자를 다큐먼트 처럼 가지고 옴.
         val userInfoRef = database.getReference("userInfo")
 
+        // 사용자가 좋아요한 목록
+        val userLikeRef = database.getReference("userLike")
+
     }
 }

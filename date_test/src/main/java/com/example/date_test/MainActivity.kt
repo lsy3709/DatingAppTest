@@ -92,11 +92,14 @@ class MainActivity : AppCompatActivity() {
 //        cardStackView.adapter = cardStackAdapter
     }
 
+    // 유저 가져오기.
     private fun getUserDataList() {
 
         val postListener = object : ValueEventListener {
+            //dataSnapshot 파이어베이스에서 담은 정보.
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
+            //dataSnapshot.children 해당 컬렉션 하위에 있는 데이터를
+                // 반복문으로 dataModel에 담아서 하나씩 꺼내는 작업.
                 for (dataModel in dataSnapshot.children) {
 
                     val user = dataModel.getValue(UserDataModel::class.java)

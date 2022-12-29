@@ -42,8 +42,10 @@ class JoinActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
+        //회원가입 액티비티 화면에서 해당 프로필 이미지 선택.
         profileImage = findViewById(R.id.imageArea)
 
+        // 갤러리 화면에서 해당 주소에서 이미지 선택 후 가져오는 알고리즘.
         val getAction = registerForActivityResult(
             ActivityResultContracts.GetContent(),
             ActivityResultCallback { uri ->
@@ -51,11 +53,13 @@ class JoinActivity : AppCompatActivity() {
             }
         )
 
+        //이미지 영역 클릭시 갤러리 열기.
         profileImage.setOnClickListener {
             getAction.launch("image/*")
         }
 
 
+        //회원가입 버튼 클릭시 이벤트 진행.
         val joinBtn = findViewById<Button>(R.id.joinBtn)
         joinBtn.setOnClickListener {
 
@@ -70,6 +74,7 @@ class JoinActivity : AppCompatActivity() {
 //            Log.d("lsy", email.text.toString())
 //            Log.d("lsy", pwd.text.toString())
 
+            // 이메일과 패스워드로 인증 만들기.
             auth.createUserWithEmailAndPassword(email.text.toString(), pwd.text.toString())
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -101,8 +106,10 @@ class JoinActivity : AppCompatActivity() {
                         // userInfo -> 하위에 uid 생성후 -> 하위에 각 정보 5개가 저장되는 구조.
                         FirebaseRef.userInfoRef.child(uid).setValue(userModel)
 
+//                        이미지 업로드
                         uploadImage(uid)
 
+                        // 회원가입 후 메인으로
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
 
@@ -117,9 +124,12 @@ class JoinActivity : AppCompatActivity() {
 
 
         }
+    // 이미지 업로드 함수: uid 이름으로 파일 이미지 저장.
     private fun uploadImage(uid : String){
 
+        //스토리지 객체 생성
         val storage = Firebase.storage
+        // 스토리지 하위에 uid명.png 형식으로 저장.
         val storageRef = storage.reference.child(uid + ".png")
 
 

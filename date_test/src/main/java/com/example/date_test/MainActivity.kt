@@ -82,8 +82,11 @@ class MainActivity : AppCompatActivity() {
             override fun onCardSwiped(direction: Direction?) {
                 if(direction == Direction.Right) {
 //                    Toast.makeText(this@MainActivity, "right", Toast.LENGTH_SHORT).show()
+                    // 넘기고 있을 때, 해당 유저의 uid 값을 알수 있다.
 //                    Log.d(TAG, usersDataList[userCount].uid.toString())
 
+                    // 나의 uid : uid
+                    // 내가 좋아요 한 사람의 uid : usersDataList[userCount].uid.toString()
                     userLikeOtherUser(uid, usersDataList[userCount].uid.toString())
                 }
 
@@ -93,7 +96,10 @@ class MainActivity : AppCompatActivity() {
 
                 userCount = userCount + 1
 
+                // 유저 카운터를 세어서, 받아온 목록 리스트의 갯수와 일치하면 새롭게 유저 받아오기.
                 if(userCount == usersDataList.count()) {
+                    // 새 유저 정보 받아오기.
+                    // 현재 성별을 고려해서 다른 성별 정보를 가져오기.
                     getUserDataList(currentUserGender)
                     Toast.makeText(this@MainActivity, "유저 새롭게 받아옵니다", Toast.LENGTH_LONG).show()
                 }
@@ -157,7 +163,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // 모든 유저 가져오기.
+    // 다른 성별 유저 가져오기.
+    // 현재 성별를 매개변수로 넣어서
+    // 불러온 정보와 성별를 비교하여 다르면 유저 목록에 추가하기.
     private fun getUserDataList(currentUserGender : String){
 
         val postListener = object : ValueEventListener {
@@ -196,6 +204,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun userLikeOtherUser(myUid : String, otherUid : String){
 
+        //파이어베이스 데이터베이스에 쓰기.
+        // userLikeRef 컬렉션에 하위에 나의 uid 아래에 좋아요한 상대방 아이디를 넣고 true로 설정하기.
+        // 내가 좋아요 한사람들을 목록에 추가하기 가능.
         FirebaseRef.userLikeRef.child(myUid).child(otherUid).setValue("true")
 
         getOtherUserLikeList(otherUid)
@@ -213,10 +224,15 @@ class MainActivity : AppCompatActivity() {
                 // 여기서 내 uid가 있는지 체크만 해주면 됨.
                 for (dataModel in dataSnapshot.children) {
 
+                    // 내가 좋아요 한 사람의 좋아요한 목록의 키(uid) 값
                     val likeUserKey = dataModel.key.toString()
+
+                    // 나의 uid와 비교해서 같으면 , 매칭 완료 띄우기.
                     if(likeUserKey.equals(uid)){
                         Toast.makeText(this@MainActivity, "매칭 완료", Toast.LENGTH_SHORT).show()
+                        // 알림띄우기 설정하기.
                         createNotificationChannel()
+                        // 설정한 알림 보내기.
                         sendNotification()
                     }
 
@@ -229,12 +245,18 @@ class MainActivity : AppCompatActivity() {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
+        // 내가 좋아요 한 사람의 좋아요 리스트를 가져오기.
         FirebaseRef.userLikeRef.child(otherUid).addValueEventListener(postListener)
 
 
     }
 
-    //Notification
+    //Notification 알림 띄우기
+
+    // 구글에 샘플 코드에서
+    //   val name = "name" 설정.
+    // val descriptionText = "description"
+    // NotificationChannel("Test_Channel" 설정 임의로 함.
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -253,12 +275,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 함수이름만 임의로 정하고, 안의 코드는 기본 알림 만들어기에서 샘플코드 그대로 가져오기.
+    // 기본 자동 임포트 하고,
+    // "Test_Channel") 설정.
+    //  .setSmallIcon(R.drawable.ic_launcher_background)
+    //            .setContentTitle("매칭완료")
+    //            .setContentText("매칭이 완료되었습니다 저사람도 나를 좋아해요")  등 임의로 설정.
     private fun sendNotification(){
         var builder = NotificationCompat.Builder(this, "Test_Channel")
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setContentTitle("매칭완료")
             .setContentText("매칭이 완료되었습니다 저사람도 나를 좋아해요")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        // 알림이 안띄워져서 추가한 코드.
         with(NotificationManagerCompat.from(this)) {
             notify(123, builder.build())
         }

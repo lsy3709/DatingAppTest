@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.date_test">
-
-    <!--인터넷 사용 허용-->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 인터넷 사용 허용 -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,14 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DatingAppTest">
-        <activity android:name=".setting.SettingActivity"></activity>
+        <activity
+            android:name=".message.MyLikeListActivity"
+            android:exported="false" />
+        <activity android:name=".setting.SettingActivity" />
         <activity android:name=".setting.MyPageActivity" />
-        <activity
-            android:name=".auth.LoginActivity"
-             />
-        <activity
-            android:name=".auth.JoinActivity"
-             />
+        <activity android:name=".auth.LoginActivity" />
+        <activity android:name=".auth.JoinActivity" />
         <activity android:name=".auth.IntroActivity" />
         <activity
             android:name=".SplashActivity"

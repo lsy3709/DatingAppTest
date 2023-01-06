@@ -7,11 +7,17 @@ import android.widget.ListView
 import android.widget.Toast
 import com.example.date_test.R
 import com.example.date_test.auth.UserDataModel
+import com.example.date_test.message.fcm.NotiModel
+import com.example.date_test.message.fcm.PushNotification
+import com.example.date_test.message.fcm.RetrofitInstance
 import com.example.date_test.utils.FirebaseAuthUtils
 import com.example.date_test.utils.FirebaseRef
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 // 내가 종아요한 사람들이 나를 좋아요 한 리스트 목록.
 class MyLikeListActivity : AppCompatActivity() {
@@ -46,7 +52,20 @@ class MyLikeListActivity : AppCompatActivity() {
         userListView.setOnItemClickListener{ parent, view, position, id ->
             //Log.d(TAG,likeUserList[position].uid.toString())
             checkMatching(likeUserList[position].uid.toString())
+
+            //레트로핏 통신 하기위한 설정
+            // 테스트시 안되는 경우 -> File -> Invalidate cache 누르고
+            // 디바이스 다시 리부트
+            // 앱 지우고 다시 실행 테스트 해보기.
+            val notiModel = NotiModel("a", "b")
+
+            //테스트시 2번째 매개변수에 받는 상대방의 토큰 값 하드코딩으로 넣어 보기.
+            val pushModel = PushNotification(notiModel, likeUserList[position].token.toString())
+
+            testPush(pushModel)
         }
+
+
 
     }
 
@@ -151,5 +170,14 @@ class MyLikeListActivity : AppCompatActivity() {
             FirebaseRef.userInfoRef.addValueEventListener(postListener)
 
         }
+
+    //PUSH 보내기
+    //message -> fcm -> PushNotification 에 있음
+    private fun testPush(notification : PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+
+        //NotiAPI postNotification 있음.
+        RetrofitInstance.api.postNotification(notification)
+
+    }
 
 }

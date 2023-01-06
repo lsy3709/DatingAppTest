@@ -9,6 +9,8 @@ import com.google.firebase.messaging.RemoteMessage
 // Firebase 서버에서 앱으로 메시지 보내주고
 // 앱에서 메시지 받는 방법 생각해보기.
 // 앱에서 알람 띄우기.
+// 반응이 많이 느림. 오는 것도 있고, 나중에 한참 있다고 오거나
+// 안오는 경우도 있음. 되기는 함.
 class FirebaseService : FirebaseMessagingService() {
 
     private  val TAG = "FirebaseService"

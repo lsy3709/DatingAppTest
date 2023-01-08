@@ -14,3 +14,5 @@
 .cxx
 local.properties
 google-services.json
+
+/date_test/src/main/java/com/example/date_test/message/fcm/Repo.kt

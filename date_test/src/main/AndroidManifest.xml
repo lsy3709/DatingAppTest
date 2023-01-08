@@ -4,6 +4,8 @@
     <!-- 인터넷 사용 허용 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--<uses-permission android:name="android.permission.POST_NOTIFICATIONS" tools:node="remove"/>-->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +20,7 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-            </service>
+        </service>
 
         <activity
             android:name=".message.MyLikeListActivity"

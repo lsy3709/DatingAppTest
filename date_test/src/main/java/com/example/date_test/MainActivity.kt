@@ -179,7 +179,7 @@ class MainActivity : AppCompatActivity() {
 
                     } else {
 
-                        usersDataList.add(user!!)
+                        usersDataList.add(user)
 
                     }
 

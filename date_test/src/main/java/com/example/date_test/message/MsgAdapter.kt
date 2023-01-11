@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.date_test.R
-import com.example.date_test.auth.UserDataModel
 
-
-class ListViewAdapter(val context : Context, val items : MutableList<UserDataModel>) : BaseAdapter() {
+class MsgAdapter(val context : Context, val items : MutableList<MsgModel>) : BaseAdapter() {
     override fun getCount(): Int {
         return items.size
     }
@@ -32,8 +30,11 @@ class ListViewAdapter(val context : Context, val items : MutableList<UserDataMod
 
         }
 
-        val nickname = convertView!!.findViewById<TextView>(R.id.listViewItemNickname)
-        nickname.text = items[position].nickname
+        val nicknameArea = convertView!!.findViewById<TextView>(R.id.listViewItemNicknameArea)
+        val textArea = convertView!!.findViewById<TextView>(R.id.listViewItemNickname)
+
+        nicknameArea.text = items[position].senderInfo
+        textArea.text = items[position].sendTxt
 
         return convertView!!
 

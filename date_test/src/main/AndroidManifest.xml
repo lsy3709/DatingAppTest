@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DatingAppTest">
+        <activity android:name=".message.MyMsgActivity"></activity>
 
         <service
             android:name=".message.fcm.FirebaseService"
@@ -22,19 +23,17 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".message.MyLikeListActivity"
-            android:exported="false" />
+        <activity android:name=".message.MyLikeListActivity" />
         <activity android:name=".setting.SettingActivity" />
         <activity android:name=".setting.MyPageActivity" />
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".auth.JoinActivity" />
         <activity android:name=".auth.IntroActivity" />
-        <activity
-            android:name=".SplashActivity"
+        <activity android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

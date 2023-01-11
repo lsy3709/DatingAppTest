@@ -29,15 +29,18 @@ class FirebaseService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        Log.e(TAG, message.notification?.title.toString())
-        Log.e(TAG, message.notification?.body.toString())
+//        Log.e(TAG, message.notification?.title.toString())
+//        Log.e(TAG, message.notification?.body.toString())
 //
         //파이어 베이스 콘솔 상에서 클라우드 메시지 보내면 제목 내용 뜸.
-        val title = message.notification?.title.toString()
-        val body = message.notification?.body.toString()
+//        val title = message.notification?.title.toString()
+//        val body = message.notification?.body.toString()
 
-//        val title = message.data["title"].toString()
-//        val body = message.data["content"].toString()
+        val title = message.data["title"].toString()
+        val body = message.data["content"].toString()
+
+        Log.e(TAG, title)
+        Log.e(TAG, body)
 
         createNotificationChannel()
         sendNotification(title, body)

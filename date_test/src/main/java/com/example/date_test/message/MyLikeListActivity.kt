@@ -3,8 +3,12 @@ package com.example.date_test.message
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.date_test.R
 import com.example.date_test.auth.UserDataModel
 import com.example.date_test.message.fcm.NotiModel
@@ -12,6 +16,7 @@ import com.example.date_test.message.fcm.PushNotification
 import com.example.date_test.message.fcm.RetrofitInstance
 import com.example.date_test.utils.FirebaseAuthUtils
 import com.example.date_test.utils.FirebaseRef
+import com.example.date_test.utils.MyInfo
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -23,14 +28,16 @@ import kotlinx.coroutines.launch
 class MyLikeListActivity : AppCompatActivity() {
 
     private val TAG = "MyLikeListActivity"
+    // 내 uid 가져오기
+    private val uid = FirebaseAuthUtils.getUid()
 
     private val likeUserListUid = mutableListOf<String>()
     private val likeUserList = mutableListOf<UserDataModel>()
 
     lateinit var listviewAdapter : ListViewAdapter
+    lateinit var getterUid : String
+    lateinit var getterToken : String
 
-    // 내 uid 가져오기
-    private val uid = FirebaseAuthUtils.getUid()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -49,22 +56,33 @@ class MyLikeListActivity : AppCompatActivity() {
         // 나를 좋아요한 사람의 리스트 받기.
 
         //전체 유저 중에서 내가 좋아요한 사람들 목록 가져와 나와 매칭 여부
-        userListView.setOnItemClickListener{ parent, view, position, id ->
-            //Log.d(TAG,likeUserList[position].uid.toString())
+//        userListView.setOnItemClickListener{ parent, view, position, id ->
+//            //Log.d(TAG,likeUserList[position].uid.toString())
+//            checkMatching(likeUserList[position].uid.toString())
+//
+//            //레트로핏 통신 하기위한 설정
+//            // 테스트시 안되는 경우 -> File -> Invalidate cache 누르고
+//            // 디바이스 다시 리부트
+//            // 앱 지우고 다시 실행 테스트 해보기.
+//            val notiModel = NotiModel("a", "b")
+//
+//            //테스트시 2번째 매개변수에 받는 상대방의 토큰 값 하드코딩으로 넣어 보기.
+//            val pushModel = PushNotification(notiModel, likeUserList[position].token.toString())
+//
+//            testPush(pushModel)
+//        }
+
+        userListView.setOnItemLongClickListener { parent, view, position, id ->
+
             checkMatching(likeUserList[position].uid.toString())
+            getterUid = likeUserList[position].uid.toString()
+            getterToken = likeUserList[position].token.toString()
 
-            //레트로핏 통신 하기위한 설정
-            // 테스트시 안되는 경우 -> File -> Invalidate cache 누르고
-            // 디바이스 다시 리부트
-            // 앱 지우고 다시 실행 테스트 해보기.
-            val notiModel = NotiModel("a", "b")
-
-            //테스트시 2번째 매개변수에 받는 상대방의 토큰 값 하드코딩으로 넣어 보기.
-            val pushModel = PushNotification(notiModel, likeUserList[position].token.toString())
-
-            testPush(pushModel)
+            return@setOnItemLongClickListener(true)
         }
-
+        // 좋아요 한 유저를 클릭시 메시지 보내기 창이 뜨고 , 받는 사람도 창이 필요.
+        // 메시지 전송 후 상대방 푸쉬 알람 띄우기
+        // 서로 좋아요 한 사람만 메세지 보내기 가능,
 
 
     }
@@ -80,7 +98,7 @@ class MyLikeListActivity : AppCompatActivity() {
                 Log.d(TAG, otherUid)
 
                 if(dataSnapshot.children.count() == 0){
-                    Toast.makeText(this@MyLikeListActivity,"매칭이 안됨",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MyLikeListActivity,"상대방이 좋아요한 사람이 없어요",Toast.LENGTH_SHORT).show()
                 } else {
                     // 여기 리스트안에서 나의 UID가 있는지 확인만 해주면 됨.
                     // 내가 좋아요한 사람(민지)의 좋아요 리스트를 불러와서
@@ -91,6 +109,7 @@ class MyLikeListActivity : AppCompatActivity() {
                         val likeUserKey = dataModel.key.toString()
                         if(likeUserKey.equals(uid)){
                             Toast.makeText(this@MyLikeListActivity,"매칭이 됨",Toast.LENGTH_SHORT).show()
+                            showDialog()
                         } else {
                             Toast.makeText(this@MyLikeListActivity,"매칭이 안됨",Toast.LENGTH_SHORT).show()
                         }
@@ -156,7 +175,7 @@ class MyLikeListActivity : AppCompatActivity() {
                         likeUserList.add(user!!)
                     }
                     listviewAdapter.notifyDataSetChanged()
-                    Log.d(TAG, "point : "+ user.toString())
+                    Log.d(TAG, likeUserList.toString())
                 }
 
                 }
@@ -174,9 +193,46 @@ class MyLikeListActivity : AppCompatActivity() {
     //PUSH 보내기
     //message -> fcm -> PushNotification 에 있음
     private fun testPush(notification : PushNotification) = CoroutineScope(Dispatchers.IO).launch {
-
+//        Log.d(TAG, "테스트 푸쉬 호출후")
         //NotiAPI postNotification 있음.
         RetrofitInstance.api.postNotification(notification)
+//        Log.d(TAG, "레트로피 호출 후")
+
+    }
+
+    // Dialog
+    private fun showDialog(){
+
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog, null)
+        val mBuilder = AlertDialog.Builder(this)
+            .setView(mDialogView)
+            .setTitle("메세지 보내기")
+
+        val mAlertDialog = mBuilder.show()
+
+        val btn = mAlertDialog.findViewById<Button>(R.id.sendBtnArea)
+        val textArea = mAlertDialog.findViewById<EditText>(R.id.sendTextArea)
+        btn?.setOnClickListener {
+
+            val msgText = textArea!!.text.toString()
+
+            val mgsModel = MsgModel(MyInfo.myNickname, msgText)
+
+            FirebaseRef.userMsgRef.child(getterUid).push().setValue(mgsModel)
+
+            val notiModel = NotiModel(MyInfo.myNickname, msgText)
+
+            val pushModel = PushNotification(notiModel, getterToken)
+
+            testPush(pushModel)
+
+            mAlertDialog.dismiss()
+        }
+
+        // message
+        // 받는 사람 uid
+        // Message
+        // 누가 보냈는지
 
     }
 

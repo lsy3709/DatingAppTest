@@ -18,6 +18,20 @@ import com.google.firebase.messaging.RemoteMessage
 // 앱에서 알람 띄우기.
 // 반응이 많이 느림. 오는 것도 있고, 나중에 한참 있다고 오거나
 // 안오는 경우도 있음. 되기는 함.
+
+// 파이어 베이스 알람 푸쉬 시 주의 사항.  안되는 경우 대처 요령.
+//계속 파이어베스 푸쉬 알림 기능 동작 안함. 계속 테스트 중.
+//1)implementation 'com.google.firebase:firebase-messaging-directboot:20.2.0' 추가.
+// //직접 부팅 모드에서 FCM 메시지 수신 -< 공식 홈페이지에 있는 부분
+//2)Clean Project 3)Invalidate Cashes
+//4)PushNotification.kt의 token을 to로변경,
+//5)앱을 깔았다 지우고
+//6)유저를 새로 만들어서 회원가입 알림 기능 동작, 하지만, 한명에게만 푸쉬가 뜸.
+// 팁) 5) 6) 만 진행 해도 잘 되는 경우도 있음.
+
+// 에뮬레이터 기기를 다시 지우고 새로 설치 후 회원 가입 해보고 테스트 먼저 해보고 위에 과정 다시 해보기.
+// 잘 되는 경우가 있음.
+
 class FirebaseService : FirebaseMessagingService() {
 
     private  val TAG = "FirebaseService"

@@ -203,29 +203,48 @@ class MyLikeListActivity : AppCompatActivity() {
     // Dialog
     private fun showDialog(){
 
+        //다이얼로그 뷰 부분 가져오기
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog, null)
+        //해당 뷰 연결 하기.
         val mBuilder = AlertDialog.Builder(this)
             .setView(mDialogView)
             .setTitle("메세지 보내기")
 
+//        이렇게 하면 다이얼로그 잘 뜸
+//        mBuilder.show()
+
+        // 뷰 보여주는 함수 재할당.
         val mAlertDialog = mBuilder.show()
 
+        // 추가 작업
+
+        // 버튼 부분 아이디로 선택해서 가져오기
         val btn = mAlertDialog.findViewById<Button>(R.id.sendBtnArea)
+        // 텍스트 영역 마찬가지
         val textArea = mAlertDialog.findViewById<EditText>(R.id.sendTextArea)
+        // 버튼 클릭시 이벤트 핸들러 부분
         btn?.setOnClickListener {
 
+            //전달 할 메세지 내용
             val msgText = textArea!!.text.toString()
 
+            // 메시지 모델을 만들어서, 닉네임과, 전달한 메세지 설정.
             val mgsModel = MsgModel(MyInfo.myNickname, msgText)
 
+            // 상대방의 uid 필요하고, 전달 할 메세지를 설정.
+            // 해당 메시지를 중복 되지 않고 보내기 위해서 : push() 설정.
             FirebaseRef.userMsgRef.child(getterUid).push().setValue(mgsModel)
 
+            // 제목과 내용 모델
             val notiModel = NotiModel(MyInfo.myNickname, msgText)
 
+            //제목과 내용 모델 , 토큰 (상대방)
             val pushModel = PushNotification(notiModel, getterToken)
 
+            //레트로핏으로 전달하기.
             testPush(pushModel)
 
+            //다이얼로그 창 숨기기
             mAlertDialog.dismiss()
         }
 

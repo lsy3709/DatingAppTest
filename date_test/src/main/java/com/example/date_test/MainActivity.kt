@@ -20,6 +20,7 @@ import com.example.date_test.setting.SettingActivity
 import com.example.date_test.slider.CardStackAdapter
 import com.example.date_test.utils.FirebaseAuthUtils
 import com.example.date_test.utils.FirebaseRef
+import com.example.date_test.utils.MyInfo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -149,6 +150,9 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, data?.gender.toString())
 
                 currentUserGender = data?.gender.toString()
+
+                //나의 닉네임을 가져오기
+                MyInfo.myNickname = data?.nickname.toString()
 
                 getUserDataList(currentUserGender)
 

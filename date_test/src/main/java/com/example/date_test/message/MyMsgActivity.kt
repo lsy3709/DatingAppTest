@@ -47,8 +47,11 @@ class MyMsgActivity : AppCompatActivity() {
                     Log.d(TAG, msg.toString())
 
                 }
-                msgList.reverse()
 
+                // 메세지 최신순으로 받아오기기
+               msgList.reverse()
+
+                //데이터를 받아와서 다시 적용하기.
                 listviewAdapter.notifyDataSetChanged()
 
             }
